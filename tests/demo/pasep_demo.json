@@ -1,0 +1,63 @@
+{
+    "contentType": "application/vnd.gorules.decision",
+    "nodes": [
+      {
+        "type": "inputNode",
+        "id": "pasep_desp_input",
+        "name": "request",
+        "position": { "x": 0, "y": 100 },
+        "content": { "schema": "" }
+      },
+      {
+        "type": "decisionTableNode",
+        "id": "pasep_desp_rule",
+        "name": "is_pasep_desp",
+        
+        "position": { "x": 300, "y": 100 },
+        "content": {
+          "hitPolicy": "first",
+          "inputs": [
+            { "id": "ano", "name": "ano", "field": "ano" },
+            { "id": "acao_cod", "name": "acao_cod", "field": "acao_cod" },
+            { "id": "elemento_item_cod", "name": "elemento_item_cod", "field": "elemento_item_cod" }
+          ],
+          "outputs": [
+            { "id": "pasep", "name": "pasep", "field": "pasep" }
+          ],
+          "rules": [
+            { "_id": "rule1", "ano": "", "acao_cod": "7663", "elemento_item_cod": "", "pasep": "true" },
+            { "_id": "rule2", "ano": ">= 2018", "acao_cod": "", "elemento_item_cod": "4706", "pasep": "true" },
+            { "_id": "rule3", "ano": "", "acao_cod": "", "elemento_item_cod": "", "pasep": "false" }
+          ],
+          "passThrough": true,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "outputNode",
+        "id": "pasep_desp_output",
+        "name": "pasep",
+        "position": { "x": 600, "y": 100 },
+        "content": { "schema": "boolean" }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "type": "edge",
+        "sourceId": "pasep_desp_input",
+        "targetId": "pasep_desp_rule",
+        "sourceHandle": null
+      },
+      {
+        "id": "e2",
+        "type": "edge",
+        "sourceId": "pasep_desp_rule",
+        "targetId": "pasep_desp_output",
+        "sourceHandle": null
+      }
+    ]
+  }
+  
