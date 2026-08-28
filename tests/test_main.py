@@ -1,5 +1,8 @@
-from my_pkg import main
+from src import main
 
 
-def test_hello():
+def test():
     assert main.hello() == 'Hello, world!'
+
+
+
