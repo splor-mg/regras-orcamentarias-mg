@@ -1,0 +1,126 @@
+{
+    "contentType": "application/vnd.gorules.decision",
+    "nodes": [
+      {
+        "type": "inputNode",
+        "id": "input",
+        "name": "request",
+        "position": { "x": 0, "y": 100 },
+        "content": { "schema": "" }
+      },
+      {
+        "type": "switchNode",
+        "id": "intra_saude_desp_switch",
+        "name": "intra_saude_desp_switch",
+        "content": {
+          "hitPolicy": "first",
+          "statements": [
+            { "id": "EI", "condition": "elemento_item_cod != null", "isDefault": true },
+            { "id": "acao", "condition": "", "isDefault": false }
+          ]
+        }
+       },
+       {
+        "type": "decisionTableNode",
+        "id": "intra_saude_desp_ei",
+        "name": "intra_saude_desp_ei",
+        "position": { "x": 280, "y": 100 },
+        "content": {
+          "hitPolicy": "first",
+          "inputs": [
+            { "id": "uo_cod", "name": "uo_cod", "field": "uo_cod" },
+            { "id": "modalidade_cod", "name": "modalidade_cod", "field": "modalidade_cod" },
+            { "id": "elemento_item_cod", "name": "elemento_item_cod", "field": "elemento_item_cod" }
+          ],
+          "outputs": [
+            { "id": "intra_saude", "name": "intra_saude", "field": "intra_saude" }
+          ],
+          "rules": [
+            { "_id": "intra1", "uo_cod": "4291", "modalidade_cod": "91", "elemento_item_cod": "4104", "intra_saude": "true" },
+            { "_id": "default", "uo_cod": "", "modalidade_cod": "", "elemento_item_cod": "", "intra_saude": "false" }
+          ],
+          "passThrough": true,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "decisionTableNode",
+        "id": "intra_saude_desp_acao",
+        "name": "intra_saude_desp_acao",
+        "position": { "x": 280, "y": 100 },
+        "content": {
+          "hitPolicy": "first",
+          "inputs": [
+            { "id": "ano", "name": "ano", "field": "ano" },
+            { "id": "uo_cod", "name": "uo_cod", "field": "uo_cod" },
+            { "id": "modalidade_cod", "name": "modalidade_cod", "field": "modalidade_cod" },
+            { "id": "acao_cod", "name": "acao_cod", "field": "acao_cod" }
+          ],
+          "outputs": [
+            { "id": "intra_saude", "name": "intra_saude", "field": "intra_saude" }
+          ],
+          "rules": [
+            { "_id": "intra1", "ano": "<=2015", "uo_cod": "4291", "modalidade_cod": "91", "acao_cod": "4030, 4225, 4263, 4264, 4265, 4344, 4371, 4375", "intra_saude": "true" },
+            { "_id": "intra2", "ano": "2016", "uo_cod": "4291", "modalidade_cod": "91", "acao_cod": "4245, 4272, 4277, 4283, 4301, 4304, 4637", "intra_saude": "true" },
+            { "_id": "intra3", "ano": "2017", "uo_cod": "4291", "modalidade_cod": "91", "acao_cod": "4245, 4272, 4283, 4301, 4304, 4637, 4432, 4697", "intra_saude": "true", "_description": "Exclusão da ação 4277. Inclusão das ações 4432 e 4697."},
+            { "_id": "intra4", "ano": "2018, 2019", "uo_cod": "4291", "modalidade_cod": "91", "acao_cod": "4245, 4272, 4283, 4301, 4304, 4637, 4432, 4697, 4213, 4277", "intra_saude": "true", "_description": "Volta da ação 4277 como intra. Inclusão da ação 4213."},
+            { "_id": "intra5", "ano": "2020", "uo_cod": "4291", "modalidade_cod": "91", "acao_cod": "4263, 4290, 4520, 4254, 4244, 4243, 4287, 2057", "intra_saude": "true", "_description": "Mudança de todas as ações da intra saúde."},
+            { "_id": "intra3", "ano": "2021, 2022, 2023", "uo_cod": "4291", "modalidade_cod": "91", "acao_cod": "4263, 4290, 4520, 4254, 4244, 4243, 4287, 2057, 2030, 2031, 2036", "intra_saude": "true", "_description": "Inclusão das ações 2030, 2031 e 2036."},
+            { "_id": "intra6", "ano": ">=2024", "uo_cod": "4291", "modalidade_cod": "91", "acao_cod": "2110, 2111, 2112, 2115, 2135, 2136, 2137", "intra_saude": "true", "_description": "Mudança de todas as ações da intra saúde."},
+            { "_id": "default", "ano": "", "uo_cod": "", "modalidade_cod": "", "acao_cod": "", "intra_saude": "false" }
+          ],
+          "passThrough": true,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "outputNode",
+        "id": "intra_saude_desp_output",
+        "name": "intra_saude",
+        "position": { "x": 840, "y": 100 },
+        "content": { "schema": "" }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "type": "edge",
+        "sourceId": "input",
+        "targetId": "intra_saude_desp_switch",
+        "sourceHandle": null
+      },
+      {
+        "id": "e2",
+        "type": "edge",
+        "sourceId": "intra_saude_desp_switch",
+        "targetId": "intra_saude_desp_ei",
+        "sourceHandle": "EI"
+      },
+      {
+        "id": "e3",
+        "type": "edge",
+        "sourceId": "intra_saude_desp_switch",
+        "targetId": "intra_saude_desp_acao",
+        "sourceHandle": "acao"
+      },
+      {
+        "id": "e4",
+        "type": "edge",
+        "sourceId": "intra_saude_desp_acao",
+        "targetId": "intra_saude_desp_output",
+        "sourceHandle": null
+      },
+      {
+        "id": "e5",
+        "type": "edge",
+        "sourceId": "intra_saude_desp_ei",
+        "targetId": "intra_saude_desp_output",
+        "sourceHandle": null
+      }
+    ]
+  }
+  

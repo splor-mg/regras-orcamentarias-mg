@@ -1,0 +1,190 @@
+{
+  "contentType": "application/vnd.gorules.decision",
+  "nodes": [
+    {
+      "type": "inputNode",
+      "id": "input",
+      "name": "request",
+      "position": {"x": 0, "y": 100},
+      "content": {"schema": ""}
+    },
+    {
+      "type": "expressionNode",
+      "id": "normaliza_receita_cod",
+      "name": "normaliza_receita_cod",
+      "position": {"x": 180, "y": 100},
+      "content": {
+        "expressions": [
+          {"id": "expr1", "key": "receita_cod", "value": "string(receita_cod)"}
+        ],
+        "passThrough": true
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_ibs_principal",
+      "name": "is_ibs_principal",
+      "position": {"x": 360, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "ibs_principal","name": "ibs_principal", "field": "ibs_principal"}
+        ],
+        "rules": [
+          { "_id": "desde_2026", "ano": ">=2026", "receita_cod": "startsWith($, \"11165001\") or startsWith($, \"91165001\")", "ibs_principal": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "ibs_principal": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_ibs_mjm",
+      "name": "is_ibs_mjm",
+      "position": {"x": 540, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "ibs_mjm","name": "ibs_mjm", "field": "ibs_mjm"}
+        ],
+        "rules": [
+          { "_id": "desde_2026", "ano": ">=2026", "receita_cod": "startsWith($, \"11165002\") or startsWith($, \"91165002\")", "ibs_mjm": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "ibs_mjm": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_ibs_da",
+      "name": "is_ibs_da",
+      "position": {"x": 720, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "ibs_da","name": "ibs_da", "field": "ibs_da"}
+        ],
+        "rules": [
+          { "_id": "desde_2026", "ano": ">=2026", "receita_cod": "startsWith($, \"11165003\") or startsWith($, \"91165003\")", "ibs_da": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "ibs_da": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_ibs_mjm_da",
+      "name": "is_ibs_mjm_da",
+      "position": {"x": 900, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "ibs_mjm_da","name": "ibs_mjm_da", "field": "ibs_mjm_da"}
+        ],
+        "rules": [
+          { "_id": "desde_2026", "ano": ">=2026", "receita_cod": "startsWith($, \"11165004\") or startsWith($, \"91165004\")", "ibs_mjm_da": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "ibs_mjm_da": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "expressionNode",
+      "id": "is_ibs",
+      "name": "is_ibs",
+      "position": {"x": 1080, "y": 100},
+      "content": {
+        "expressions": [
+          {"id": "ibs", "key": "ibs", "value": "ibs_principal or ibs_mjm or ibs_da or ibs_mjm_da"}
+        ],
+        "passThrough": true
+      }
+    },
+    {
+      "type": "outputNode",
+      "id": "ibs_output",
+      "name": "ibs",
+      "position": {"x": 1260, "y": 100},
+      "content": {"schema": ""}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "type": "edge",
+      "sourceId": "input",
+      "targetId": "normaliza_receita_cod",
+      "sourceHandle": null
+    },
+    {
+      "id": "e2",
+      "type": "edge",
+      "sourceId": "normaliza_receita_cod",
+      "targetId": "is_ibs_principal",
+      "sourceHandle": null
+    },
+    {
+      "id": "e3",
+      "type": "edge",
+      "sourceId": "is_ibs_principal",
+      "targetId": "is_ibs_mjm",
+      "sourceHandle": null
+    },
+    {
+      "id": "e4",
+      "type": "edge",
+      "sourceId": "is_ibs_mjm",
+      "targetId": "is_ibs_da",
+      "sourceHandle": null
+    },
+    {
+      "id": "e5",
+      "type": "edge",
+      "sourceId": "is_ibs_da",
+      "targetId": "is_ibs_mjm_da",
+      "sourceHandle": null
+    },
+    {
+      "id": "e6",
+      "type": "edge",
+      "sourceId": "is_ibs_mjm_da",
+      "targetId": "is_ibs",
+      "sourceHandle": null
+    },
+    {
+      "id": "e7",
+      "type": "edge",
+      "sourceId": "is_ibs",
+      "targetId": "ibs_output",
+      "sourceHandle": null
+    }
+  ]
+}

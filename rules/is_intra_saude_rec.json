@@ -1,0 +1,85 @@
+{
+    "contentType": "application/vnd.gorules.decision",
+    "nodes": [
+      {
+        "type": "inputNode",
+        "id": "input",
+        "name": "request",
+        "position": { "x": 0, "y": 100 },
+        "content": { "schema": "" }
+      },
+      {
+        "type": "expressionNode",
+        "id": "normaliza_receita_cod",
+        "name": "normaliza_receita_cod",
+        "position": { "x": 140, "y": 100 },
+        "content": {
+          "expressions": [
+            {
+              "id": "expr1",
+              "key": "receita_cod",
+              "value": "string(receita_cod)"
+            }
+          ],
+          "passThrough": true
+        }
+      },
+      {
+        "type": "decisionTableNode",
+        "id": "intra_saude_rec",
+        "name": "intra_saude_rec",
+        "position": { "x": 280, "y": 100 },
+        "content": {
+          "hitPolicy": "first",
+          "inputs": [
+            { "id": "ano", "name": "ano", "field": "ano" },
+            { "id": "receita_cod", "name": "receita_cod", "field": "receita_cod" }
+          ],
+          "outputs": [
+            { "id": "intra_saude", "name": "intra_saude", "field": "intra_saude" }
+          ],
+          "rules": [
+            { "_id": "ate_2017", "ano": "<=2017", "receita_cod": "startsWith($, \"79908051\")", "intra_saude": "true" },
+            { "_id": "2018_2022", "ano": ">=2018 and <=2022", "receita_cod": "startsWith($, \"7728019101\")", "intra_saude": "true" },
+            { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"7729990125\")", "intra_saude": "true" },
+            { "_id": "default", "ano": "", "receita_cod": "", "intra_saude": "false" }
+          ],
+          "passThrough": false,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "outputNode",
+        "id": "intra_saude_rec_output",
+        "name": "intra_saude",
+        "position": { "x": 840, "y": 100 },
+        "content": { "schema": "" }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "type": "edge",
+        "sourceId": "input",
+        "targetId": "normaliza_receita_cod",
+        "sourceHandle": null
+      },
+      {
+        "id": "e2",
+        "type": "edge",
+        "sourceId": "normaliza_receita_cod",
+        "targetId": "intra_saude_rec",
+        "sourceHandle": null
+      },
+      {
+        "id": "e3",
+        "type": "edge",
+        "sourceId": "intra_saude_rec",
+        "targetId": "intra_saude_rec_output",
+        "sourceHandle": null
+      }
+    ]
+  }
+  

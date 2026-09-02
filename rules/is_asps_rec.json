@@ -1,0 +1,193 @@
+{
+    "contentType": "application/vnd.gorules.decision",
+    "nodes": [
+      {
+        "type": "inputNode",
+        "id": "input",
+        "name": "request",
+        "position": { "x": 0, "y": 100 },
+        "content": { "schema": "" }
+      },
+      {
+        "type": "decisionNode",
+        "name": "is_impostos",
+        "id": "is_impostos",
+        "content": {
+          "key": "is_impostos",
+          "passThrough": true,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "decisionNode",
+        "name": "is_dedutora_rec",
+        "id": "is_dedutora_rec",
+        "content": {
+          "key": "is_dedutora_rec",
+          "passThrough": true,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "decisionNode",
+        "name": "is_transf_const_mun_rec",
+        "id": "is_transf_const_mun_rec",
+        "content": {
+          "key": "is_transf_const_mun_rec",
+          "passThrough": true,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "decisionNode",
+        "name": "is_fpe_principal",
+        "id": "is_fpe_principal",
+        "content": {
+          "key": "transf_uniao/is_fpe_principal",
+          "passThrough": true,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "decisionNode",
+        "name": "is_ipi_principal",
+        "id": "is_ipi_principal",
+        "content": {
+          "key": "transf_uniao/is_ipi_principal",
+          "passThrough": true,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "decisionNode",
+        "name": "is_lei_kandir_principal",
+        "id": "is_lei_kandir_principal",
+        "content": {
+          "key": "transf_uniao/is_lei_kandir_principal",
+          "passThrough": true,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "decisionTableNode",
+        "id": "asps_rec",
+        "name": "asps_rec",
+        "position": { "x": 280, "y": 100 },
+        "content": {
+          "hitPolicy": "first",
+          "inputs": [
+            { "id": "receita_cod", "name": "receita_cod", "field": "receita_cod" },
+            { "id": "icms", "name": "icms", "field": "icms" },
+            { "id": "ipva", "name": "ipva", "field": "ipva" },
+            { "id": "irrf", "name": "irrf", "field": "irrf" },
+            { "id": "itcd", "name": "itcd", "field": "itcd" },
+            { "id": "ibs", "name": "ibs", "field": "ibs" },
+            { "id": "dedutora", "name": "dedutora", "field": "dedutora" },
+            { "id": "transf_mun", "name": "transf_mun", "field": "transf_mun" },
+            { "id": "fpe_principal", "name": "fpe_principal", "field": "fpe_principal" },
+            { "id": "ipi_principal", "name": "ipi_principal", "field": "ipi_principal" },
+            { "id": "lei_kandir_principal", "name": "lei_kandir_principal", "field": "lei_kandir_principal" }
+          ],
+          "outputs": [
+            { "id": "asps", "name": "asps", "field": "asps" }
+          ],
+          "rules": [
+            { "_id": "transf_mun", "receita_cod": "", "transf_mun": "true", "asps": "false" },
+            { "_id": "icms", "receita_cod": "", "icms": "true", "dedutora": "false", "asps": "true" },
+            { "_id": "ipva", "receita_cod": "", "ipva": "true", "dedutora": "false", "asps": "true" },
+            { "_id": "irrf", "receita_cod": "", "irrf": "true", "dedutora": "false", "asps": "true" },
+            { "_id": "itcd", "receita_cod": "", "itcd": "true", "dedutora": "false", "asps": "true" },
+            { "_id": "ibs", "receita_cod": "", "ibs": "true", "dedutora": "false", "asps": "true" },
+            { "_id": "fpe", "receita_cod": "", "fpe_principal": "true", "dedutora": "false", "asps": "true" },
+            { "_id": "ipi", "receita_cod": "", "ipi_principal": "true", "dedutora": "false", "asps": "true" },
+            { "_id": "lei_kandir", "receita_cod": "", "lei_kandir_principal": "true", "dedutora": "false", "asps": "true" },
+            { "_id": "aux_cred_etanol", "receita_cod": "startsWith($, \"1718991131\")", "asps": "true", "_description": "auxilio financeiro credito tributário etanol" },
+            { "_id": "comp_perda_icms", "receita_cod": "startsWith($, \"1718991132\") or startsWith($, \"17196201\")", "asps": "true", "_description": "compensação financeira perda tributária ICMS - LC Federal" },
+            { "_id": "default", "receita_cod": "", "asps": "false" }
+          ],
+          "passThrough": false,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "outputNode",
+        "id": "asps_rec_output",
+        "name": "asps",
+        "position": { "x": 840, "y": 100 },
+        "content": { "schema": "" }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "type": "edge",
+        "sourceId": "input",
+        "targetId": "is_impostos",
+        "sourceHandle": null
+      },
+      {
+        "id": "e2",
+        "type": "edge",
+        "sourceId": "is_impostos",
+        "targetId": "is_dedutora_rec",
+        "sourceHandle": null
+      },
+      {
+        "id": "e3",
+        "type": "edge",
+        "sourceId": "is_dedutora_rec",
+        "targetId": "is_transf_const_mun_rec",
+        "sourceHandle": null
+      },
+      {
+        "id": "e4",
+        "type": "edge",
+        "sourceId": "is_transf_const_mun_rec",
+        "targetId": "is_fpe_principal",
+        "sourceHandle": null
+      },
+      {
+        "id": "e5",
+        "type": "edge",
+        "sourceId": "is_fpe_principal",
+        "targetId": "is_ipi_principal",
+        "sourceHandle": null
+      },
+      {
+        "id": "e6",
+        "type": "edge",
+        "sourceId": "is_ipi_principal",
+        "targetId": "is_lei_kandir_principal",
+        "sourceHandle": null
+      },
+      {
+        "id": "e7",
+        "type": "edge",
+        "sourceId": "is_lei_kandir_principal",
+        "targetId": "asps_rec",
+        "sourceHandle": null
+      },
+      {
+        "id": "e8",
+        "type": "edge",
+        "sourceId": "asps_rec",
+        "targetId": "asps_rec_output",
+        "sourceHandle": null
+      }
+    ]
+  }
+  

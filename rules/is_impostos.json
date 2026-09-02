@@ -1,0 +1,163 @@
+{
+  "contentType": "application/vnd.gorules.decision",
+  "nodes": [
+    {
+      "type": "inputNode",
+      "id": "input",
+      "name": "request",
+      "position": {"x": 0, "y": 100},
+      "content": {"schema": ""}
+    },
+    {
+      "type": "decisionNode",
+      "name": "is_ibs",
+      "id": "is_ibs",
+      "content": {
+        "key": "impostos/is_ibs",
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionNode",
+      "name": "is_icms",
+      "id": "is_icms",
+      "content": {
+        "key": "impostos/is_icms",
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionNode",
+      "name": "is_ipva",
+      "id": "is_ipva",
+      "content": {
+        "key": "impostos/is_ipva",
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionNode",
+      "name": "is_irrf",
+      "id": "is_irrf",
+      "content": {
+        "key": "impostos/is_irrf",
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionNode",
+      "name": "is_itcd",
+      "id": "is_itcd",
+      "content": {
+        "key": "impostos/is_itcd",
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "expressionNode",
+      "id": "filtra_impostos",
+      "name": "filtra_impostos",
+      "position": {"x": 700, "y": 100},
+      "content": {
+        "expressions": [
+
+          {"id": "ibs", "key": "ibs", "value": "ibs"},
+          {"id": "ibs_acessorias", "key": "ibs_acessorias", "value": "ibs_mjm or ibs_da or ibs_mjm_da"},
+          {"id": "ibs_principal", "key": "ibs_principal", "value": "ibs_principal"},
+
+          {"id": "icms", "key": "icms", "value": "icms"},
+          {"id": "icms_acessorias", "key": "icms_acessorias", "value": "icms_mjm or icms_da or icms_mjm_da"},
+          {"id": "icms_principal", "key": "icms_principal", "value": "icms_principal"},
+
+          {"id": "ipva", "key": "ipva", "value": "ipva"},
+          {"id": "ipva_acessorias", "key": "ipva_acessorias", "value": "ipva_mjm or ipva_da or ipva_mjm_da"},
+          {"id": "ipva_principal", "key": "ipva_principal", "value": "ipva_principal"},
+
+          {"id": "irrf", "key": "irrf", "value": "irrf"},
+          {"id": "irrf_acessorias", "key": "irrf_acessorias", "value": "irrf_mjm or irrf_da or irrf_mjm_da"},
+          {"id": "irrf_principal", "key": "irrf_principal", "value": "irrf_principal"},
+
+          {"id": "itcd", "key": "itcd", "value": "itcd"},
+          {"id": "itcd_acessorias", "key": "itcd_acessorias", "value": "itcd_mjm or itcd_da or itcd_mjm_da"},
+          {"id": "itcd_principal", "key": "itcd_principal", "value": "itcd_principal"},
+
+          {"id": "impostos", "key": "impostos", "value": "ibs or icms or ipva or irrf or itcd"}
+        ],
+        "passThrough": false
+      }
+    },
+    {
+      "type": "outputNode",
+      "id": "impostos_output",
+      "name": "impostos",
+      "position": {"x": 900, "y": 100},
+      "content": {"schema": ""}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "type": "edge",
+      "sourceId": "input",
+      "targetId": "is_ibs",
+      "sourceHandle": null
+    },
+    {
+      "id": "e2",
+      "type": "edge",
+      "sourceId": "is_ibs",
+      "targetId": "is_icms",
+      "sourceHandle": null
+    },
+    {
+      "id": "e3",
+      "type": "edge",
+      "sourceId": "is_icms",
+      "targetId": "is_ipva",
+      "sourceHandle": null
+    },
+    {
+      "id": "e4",
+      "type": "edge",
+      "sourceId": "is_ipva",
+      "targetId": "is_irrf",
+      "sourceHandle": null
+    },
+    {
+      "id": "e5",
+      "type": "edge",
+      "sourceId": "is_irrf",
+      "targetId": "is_itcd",
+      "sourceHandle": null
+    },
+    {
+      "id": "e6",
+      "type": "edge",
+      "sourceId": "is_itcd",
+      "targetId": "filtra_impostos",
+      "sourceHandle": null
+    },
+    {
+      "id": "e7",
+      "type": "edge",
+      "sourceId": "filtra_impostos",
+      "targetId": "impostos_output",
+      "sourceHandle": null
+    }
+  ]
+}

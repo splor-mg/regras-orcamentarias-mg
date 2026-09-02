@@ -1,0 +1,198 @@
+{
+  "contentType": "application/vnd.gorules.decision",
+  "nodes": [
+    {
+      "type": "inputNode",
+      "id": "input",
+      "name": "request",
+      "position": {"x": 0, "y": 100},
+      "content": {"schema": ""}
+    },
+    {
+      "type": "expressionNode",
+      "id": "normaliza_receita_cod",
+      "name": "normaliza_receita_cod",
+      "position": {"x": 180, "y": 100},
+      "content": {
+        "expressions": [
+          {"id": "expr1", "key": "receita_cod", "value": "string(receita_cod)"}
+        ],
+        "passThrough": true
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_ipva_principal",
+      "name": "is_ipva_principal",
+      "position": {"x": 360, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "ipva_principal","name": "ipva_principal", "field": "ipva_principal"}
+        ],
+        "rules": [
+          { "_id": "ate_2017", "ano": "<=2017", "receita_cod": "startsWith($, \"111205\") or startsWith($, \"911205\")", "ipva_principal": "true" },
+          { "_id": "2018_2022", "ano": "2018, 2019, 2020, 2021, 2022", "receita_cod": "startsWith($, \"11180121\") or startsWith($, \"91180121\")", "ipva_principal": "true" },
+          { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"11125101\") or startsWith($, \"91125101\")", "ipva_principal": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "ipva_principal": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_ipva_mjm",
+      "name": "is_ipva_mjm",
+      "position": {"x": 540, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "ipva_mjm","name": "ipva_mjm", "field": "ipva_mjm"}
+        ],
+        "rules": [
+          { "_id": "ate_2017", "ano": "<=2017", "receita_cod": "startsWith($, \"191141\") or startsWith($, \"991141\")", "ipva_mjm": "true" },
+          { "_id": "2018_2022", "ano": "2018, 2019, 2020, 2021, 2022", "receita_cod": "startsWith($, \"11180122\") or startsWith($, \"91180122\")", "ipva_mjm": "true" },
+          { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"11125102\") or startsWith($, \"91125102\")", "ipva_mjm": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "ipva_mjm": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_ipva_da",
+      "name": "is_ipva_da",
+      "position": {"x": 720, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "ipva_da","name": "ipva_da", "field": "ipva_da"}
+        ],
+        "rules": [
+          { "_id": "ate_2017", "ano": "<=2017", "receita_cod": "startsWith($, \"193114\") or startsWith($, \"993114\")", "ipva_da": "true" },
+          { "_id": "2018_2022", "ano": "2018, 2019, 2020, 2021, 2022", "receita_cod": "startsWith($, \"11180123\") or startsWith($, \"91180123\")", "ipva_da": "true" },
+          { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"11125103\") or startsWith($, \"91125103\")", "ipva_da": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "ipva_da": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_ipva_mjm_da",
+      "name": "is_ipva_mjm_da",
+      "position": {"x": 900, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "ipva_mjm_da","name": "ipva_mjm_da", "field": "ipva_mjm_da"}
+        ],
+        "rules": [
+          { "_id": "ate_2017", "ano": "<=2017", "receita_cod": "startsWith($, \"191314\") or startsWith($, \"991314\")", "ipva_mjm_da": "true" },
+          { "_id": "2018_2022", "ano": "2018, 2019, 2020, 2021, 2022", "receita_cod": "startsWith($, \"11180124\") or startsWith($, \"91180124\")", "ipva_mjm_da": "true" },
+          { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"11125104\") or startsWith($, \"91125104\")", "ipva_mjm_da": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "ipva_mjm_da": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "expressionNode",
+      "id": "is_ipva",
+      "name": "is_ipva",
+      "position": {"x": 1080, "y": 100},
+      "content": {
+        "expressions": [
+          {"id": "ipva", "key": "ipva", "value": "ipva_principal or ipva_mjm or ipva_da or ipva_mjm_da"}
+        ],
+        "passThrough": true
+      }
+    },
+    {
+      "type": "outputNode",
+      "id": "ipva_output",
+      "name": "ipva",
+      "position": {"x": 1260, "y": 100},
+      "content": {"schema": ""}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "type": "edge",
+      "sourceId": "input",
+      "targetId": "normaliza_receita_cod",
+      "sourceHandle": null
+    },
+    {
+      "id": "e2",
+      "type": "edge",
+      "sourceId": "normaliza_receita_cod",
+      "targetId": "is_ipva_principal",
+      "sourceHandle": null
+    },
+    {
+      "id": "e3",
+      "type": "edge",
+      "sourceId": "is_ipva_principal",
+      "targetId": "is_ipva_mjm",
+      "sourceHandle": null
+    },
+    {
+      "id": "e4",
+      "type": "edge",
+      "sourceId": "is_ipva_mjm",
+      "targetId": "is_ipva_da",
+      "sourceHandle": null
+    },
+    {
+      "id": "e5",
+      "type": "edge",
+      "sourceId": "is_ipva_da",
+      "targetId": "is_ipva_mjm_da",
+      "sourceHandle": null
+    },
+    {
+      "id": "e6",
+      "type": "edge",
+      "sourceId": "is_ipva_mjm_da",
+      "targetId": "is_ipva",
+      "sourceHandle": null
+    },
+    {
+      "id": "e7",
+      "type": "edge",
+      "sourceId": "is_ipva",
+      "targetId": "ipva_output",
+      "sourceHandle": null
+    }
+  ]
+}

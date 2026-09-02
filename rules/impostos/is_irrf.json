@@ -1,0 +1,192 @@
+{
+  "contentType": "application/vnd.gorules.decision",
+  "nodes": [
+    {
+      "type": "inputNode",
+      "id": "input",
+      "name": "request",
+      "position": {"x": 0, "y": 100},
+      "content": {"schema": ""}
+    },
+    {
+      "type": "expressionNode",
+      "id": "normaliza_receita_cod",
+      "name": "normaliza_receita_cod",
+      "position": {"x": 180, "y": 100},
+      "content": {
+        "expressions": [
+          {"id": "expr1", "key": "receita_cod", "value": "string(receita_cod)"}
+        ],
+        "passThrough": true
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_irrf_principal",
+      "name": "is_irrf_principal",
+      "position": {"x": 360, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "irrf_principal","name": "irrf_principal", "field": "irrf_principal"}
+        ],
+        "rules": [
+          { "_id": "ate_2017", "ano": "<=2017", "receita_cod": "startsWith($, \"111204\") or startsWith($, \"911204\")", "irrf_principal": "true" },
+          { "_id": "desde_2018", "ano": ">=2018", "receita_cod": "startsWith($, \"11130311\") or startsWith($, \"11130341\") or startsWith($, \"91130311\") or startsWith($, \"91130341\")", "irrf_principal": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "irrf_principal": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_irrf_mjm",
+      "name": "is_irrf_mjm",
+      "position": {"x": 540, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "irrf_mjm","name": "irrf_mjm", "field": "irrf_mjm"}
+        ],
+        "rules": [
+          { "_id": "desde_2018", "ano": ">=2018", "receita_cod": "startsWith($, \"91130312\") or startsWith($, \"91130342\")", "irrf_mjm": "true" },
+          { "_id": "desde_2026", "ano": ">=2026", "receita_cod": "startsWith($, \"11130312\") or startsWith($, \"11130342\")", "irrf_mjm": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "irrf_mjm": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_irrf_da",
+      "name": "is_irrf_da",
+      "position": {"x": 720, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "irrf_da","name": "irrf_da", "field": "irrf_da"}
+        ],
+        "rules": [
+          { "_id": "desde_2018", "ano": ">=2018", "receita_cod": "startsWith($, \"11130313\") or startsWith($, \"11130343\") or startsWith($, \"91130313\") or startsWith($, \"91130343\")", "irrf_da": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "irrf_da": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_irrf_mjm_da",
+      "name": "is_irrf_mjm_da",
+      "position": {"x": 900, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "irrf_mjm_da","name": "irrf_mjm_da", "field": "irrf_mjm_da"}
+        ],
+        "rules": [
+          { "_id": "desde_2018", "ano": ">=2018", "receita_cod": "startsWith($, \"11130314\") or startsWith($, \"11130344\") or startsWith($, \"91130314\") or startsWith($, \"91130344\")", "irrf_mjm_da": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "irrf_mjm_da": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "expressionNode",
+      "id": "is_irrf",
+      "name": "is_irrf",
+      "position": {"x": 1080, "y": 100},
+      "content": {
+        "expressions": [
+          {"id": "irrf", "key": "irrf", "value": "irrf_principal or irrf_mjm or irrf_da or irrf_mjm_da"}
+        ],
+        "passThrough": true
+      }
+    },
+    {
+      "type": "outputNode",
+      "id": "irrf_output",
+      "name": "irrf",
+      "position": {"x": 1260, "y": 100},
+      "content": {"schema": ""}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "type": "edge",
+      "sourceId": "input",
+      "targetId": "normaliza_receita_cod",
+      "sourceHandle": null
+    },
+    {
+      "id": "e2",
+      "type": "edge",
+      "sourceId": "normaliza_receita_cod",
+      "targetId": "is_irrf_principal",
+      "sourceHandle": null
+    },
+    {
+      "id": "e3",
+      "type": "edge",
+      "sourceId": "is_irrf_principal",
+      "targetId": "is_irrf_mjm",
+      "sourceHandle": null
+    },
+    {
+      "id": "e4",
+      "type": "edge",
+      "sourceId": "is_irrf_mjm",
+      "targetId": "is_irrf_da",
+      "sourceHandle": null
+    },
+    {
+      "id": "e5",
+      "type": "edge",
+      "sourceId": "is_irrf_da",
+      "targetId": "is_irrf_mjm_da",
+      "sourceHandle": null
+    },
+    {
+      "id": "e6",
+      "type": "edge",
+      "sourceId": "is_irrf_mjm_da",
+      "targetId": "is_irrf",
+      "sourceHandle": null
+    },
+    {
+      "id": "e7",
+      "type": "edge",
+      "sourceId": "is_irrf",
+      "targetId": "irrf_output",
+      "sourceHandle": null
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+    "contentType": "application/vnd.gorules.decision",
+    "nodes": [
+      {
+        "type": "inputNode",
+        "id": "input",
+        "name": "request",
+        "position": { "x": 0, "y": 100 },
+        "content": { "schema": "" }
+      },
+      {
+        "type": "expressionNode",
+        "id": "normaliza_receita_cod",
+        "name": "normaliza_receita_cod",
+        "position": { "x": 140, "y": 100 },
+        "content": {
+          "expressions": [
+            {
+              "id": "expr1",
+              "key": "receita_cod",
+              "value": "string(receita_cod)"
+            }
+          ],
+          "passThrough": true
+        }
+      },
+      {
+        "type": "decisionTableNode",
+        "id": "ipi_principal",
+        "name": "ipi_principal",
+        "position": { "x": 280, "y": 100 },
+        "content": {
+          "hitPolicy": "first",
+          "inputs": [
+            { "id": "ano", "name": "ano", "field": "ano" },
+            { "id": "receita_cod", "name": "receita_cod", "field": "receita_cod" }
+          ],
+          "outputs": [
+            { "id": "ipi_principal", "name": "ipi_principal", "field": "ipi_principal" }
+          ],
+          "rules": [
+            { "_id": "ate_2017", "ano": "<=2017", "receita_cod": "startsWith($, \"17210112\") or startsWith($, \"97210112\")", "ipi_principal": "true" },
+            { "_id": "2018_2022", "ano": ">=2018 and <=2022", "receita_cod": "startsWith($, \"17180161\") or startsWith($, \"97180161\")", "ipi_principal": "true" },
+            { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"17115301\") or startsWith($, \"97115301\")", "ipi_principal": "true" },
+            { "_id": "default", "ano": "", "receita_cod": "", "ipi_principal": "false" }
+          ],
+          "passThrough": false,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "outputNode",
+        "id": "ipi_principal_output",
+        "name": "ipi_principal",
+        "position": { "x": 840, "y": 100 },
+        "content": { "schema": "" }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "type": "edge",
+        "sourceId": "input",
+        "targetId": "normaliza_receita_cod",
+        "sourceHandle": null
+      },
+      {
+        "id": "e2",
+        "type": "edge",
+        "sourceId": "normaliza_receita_cod",
+        "targetId": "ipi_principal",
+        "sourceHandle": null
+      },
+      {
+        "id": "e3",
+        "type": "edge",
+        "sourceId": "ipi_principal",
+        "targetId": "ipi_principal_output",
+        "sourceHandle": null
+      }
+    ]
+  }

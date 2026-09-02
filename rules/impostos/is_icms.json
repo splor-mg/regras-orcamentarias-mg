@@ -1,0 +1,201 @@
+{
+  "contentType": "application/vnd.gorules.decision",
+  "nodes": [
+    {
+      "type": "inputNode",
+      "id": "input",
+      "name": "request",
+      "position": {"x": 0, "y": 100},
+      "content": {"schema": ""}
+    },
+    {
+      "type": "expressionNode",
+      "id": "normaliza_receita_cod",
+      "name": "normaliza_receita_cod",
+      "position": {"x": 180, "y": 100},
+      "content": {
+        "expressions": [
+          {"id": "expr1", "key": "receita_cod", "value": "string(receita_cod)"}
+        ],
+        "passThrough": true
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_icms_principal",
+      "name": "is_icms_principal",
+      "position": {"x": 360, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "icms_principal","name": "icms_principal", "field": "icms_principal"}
+        ],
+        "rules": [
+          { "_id": "ate_2017", "ano": "<=2017", "receita_cod": "startsWith($, \"1113\") or startsWith($, \"9113\")", "icms_principal": "true" },
+          { "_id": "2018_2022", "ano": "2018, 2019, 2020, 2021, 2022", "receita_cod": "startsWith($, \"11180211\") or startsWith($, \"11180221\") or startsWith($, \"91180211\") or startsWith($, \"91180221\")", "icms_principal": "true" },
+          { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"11145011\") or startsWith($, \"11145021\") or startsWith($, \"91145011\") or startsWith($, \"91145021\")", "icms_principal": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "icms_principal": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_icms_mjm",
+      "name": "is_icms_mjm",
+      "position": {"x": 540, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "icms_mjm","name": "icms_mjm", "field": "icms_mjm"}
+        ],
+        "rules": [
+          { "_id": "ate_2017", "ano": "<=2017", "receita_cod": "startsWith($, \"191142\") or startsWith($, \"991142\")", "icms_mjm": "true" },
+          { "_id": "2018_2019", "ano": "2018, 2019", "receita_cod": "startsWith($, \"1119011201\")", "icms_mjm": "true" },
+          { "_id": "2018_2019_2020_2022", "ano": "2018, 2019,2020, 2021, 2022", "receita_cod": "startsWith($, \"11180212\") or startsWith($, \"11180222\") or startsWith($, \"91180212\") or startsWith($, \"91180222\")", "icms_mjm": "true" },
+          { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"11145012\") or startsWith($, \"11145022\") or startsWith($, \"91145012\") or startsWith($, \"91145022\")", "icms_mjm": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "icms_mjm": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_icms_da",
+      "name": "is_icms_da",
+      "position": {"x": 720, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "icms_da","name": "icms_da", "field": "icms_da"}
+        ],
+        "rules": [
+          { "_id": "ate_2017", "ano": "<=2017", "receita_cod": "startsWith($, \"193115\") or startsWith($, \"993115\")", "icms_da": "true" },
+          { "_id": "2018_2019", "ano": "2018, 2019", "receita_cod": "startsWith($, \"1119011301\")", "icms_da": "true" },
+          { "_id": "2018_2019_2020_2022", "ano": "2018, 2019, 2020, 2021, 2022", "receita_cod": "startsWith($, \"11180213\") or startsWith($, \"11180223\") or startsWith($, \"91180213\") or startsWith($, \"91180223\")", "icms_da": "true" },
+          { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"11145013\") or startsWith($, \"11145023\") or startsWith($, \"91145013\") or startsWith($, \"91145023\")", "icms_da": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "icms_da": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_icms_mjm_da",
+      "name": "is_icms_mjm_da",
+      "position": {"x": 900, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "icms_mjm_da","name": "icms_mjm_da", "field": "icms_mjm_da"}
+        ],
+        "rules": [
+          { "_id": "ate_2017", "ano": "<=2017", "receita_cod": "startsWith($, \"191315\") or startsWith($, \"991315\")", "icms_mjm_da": "true" },
+          { "_id": "2018_2019", "ano": "2018, 2019", "receita_cod": "startsWith($, \"1119011401\")", "icms_mjm_da": "true" },
+          { "_id": "2018_2019_2020_2022", "ano": "2018, 2019, 2020, 2021, 2022", "receita_cod": "startsWith($, \"11180214\") or startsWith($, \"11180224\") or startsWith($, \"91180214\") or startsWith($, \"91180224\")", "icms_mjm_da": "true" },
+          { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"11145014\") or startsWith($, \"11145024\") or startsWith($, \"91145014\") or startsWith($, \"91145024\")", "icms_mjm_da": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "icms_mjm_da": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "expressionNode",
+      "id": "is_icms",
+      "name": "is_icms",
+      "position": {"x": 1080, "y": 100},
+      "content": {
+        "expressions": [
+          {"id": "icms", "key": "icms", "value": "icms_principal or icms_mjm or icms_da or icms_mjm_da"}
+        ],
+        "passThrough": true
+      }
+    },
+    {
+      "type": "outputNode",
+      "id": "icms_output",
+      "name": "icms",
+      "position": {"x": 1260, "y": 100},
+      "content": {"schema": ""}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "type": "edge",
+      "sourceId": "input",
+      "targetId": "normaliza_receita_cod",
+      "sourceHandle": null
+    },
+    {
+      "id": "e2",
+      "type": "edge",
+      "sourceId": "normaliza_receita_cod",
+      "targetId": "is_icms_principal",
+      "sourceHandle": null
+    },
+    {
+      "id": "e3",
+      "type": "edge",
+      "sourceId": "is_icms_principal",
+      "targetId": "is_icms_mjm",
+      "sourceHandle": null
+    },
+    {
+      "id": "e4",
+      "type": "edge",
+      "sourceId": "is_icms_mjm",
+      "targetId": "is_icms_da",
+      "sourceHandle": null
+    },
+    {
+      "id": "e5",
+      "type": "edge",
+      "sourceId": "is_icms_da",
+      "targetId": "is_icms_mjm_da",
+      "sourceHandle": null
+    },
+    {
+      "id": "e6",
+      "type": "edge",
+      "sourceId": "is_icms_mjm_da",
+      "targetId": "is_icms",
+      "sourceHandle": null
+    },
+    {
+      "id": "e7",
+      "type": "edge",
+      "sourceId": "is_icms",
+      "targetId": "icms_output",
+      "sourceHandle": null
+    }
+  ]
+}

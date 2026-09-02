@@ -1,0 +1,199 @@
+{
+    "contentType": "application/vnd.gorules.decision",
+    "nodes": [
+      {
+        "type": "inputNode",
+        "id": "asps_desp_input",
+        "name": "request",
+        "position": { "x": 0, "y": 100 },
+        "content": { "schema": "" }
+      },
+      {
+        "type": "decisionNode",
+        "name": "is_intra_saude_desp",
+        "id": "is_intra_saude_desp",
+        "content": {
+          "key": "is_intra_saude_desp",
+          "passThrough": true,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "switchNode",
+        "id": "asps_desp_switch",
+        "name": "asps_desp_switch",
+        "content": {
+          "hitPolicy": "first",
+          "statements": [
+            { "id": "EI", "condition": "elemento_item_cod != null", "isDefault": true },
+            { "id": "acao", "condition": "", "isDefault": false }
+          ]
+        }
+       },
+       {
+        "type": "decisionTableNode",
+        "id": "asps_desp_acao",
+        "name": "asps_desp_acao",
+        "position": { "x": 280, "y": 100 },
+        "content": {
+          "hitPolicy": "first",
+          "inputs": [
+            { "id": "ano", "name": "ano", "field": "ano" },
+            { "id": "funcao_cod", "name": "funcao_cod", "field": "funcao_cod" },
+            { "id": "uo_cod", "name": "uo_cod", "field": "uo_cod" },
+            { "id": "fonte_cod", "name": "fonte_cod", "field": "fonte_cod" },
+            { "id": "acao_cod", "name": "acao_cod", "field": "acao_cod" },
+            { "id": "modalidade_cod", "name": "modalidade_cod", "field": "modalidade_cod" },
+            { "id": "intra_saude", "name": "intra_saude", "field": "intra_saude" }
+          ],
+          "outputs": [
+            { "id": "asps", "name": "asps", "field": "asps" }
+          ],
+          "rules": [
+            { "_id": "2011_geral", "ano": "<= 2011", "funcao_cod": "10", "uo_cod": "!= 2011", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "", "intra_saude": "", "asps": "true", "_description": "ASPS Geral - 2011" },
+            { "_id": "2011_1", "ano": "<= 2011", "funcao_cod": "", "uo_cod": "1911", "fonte_cod": "10", "acao_cod": "2733", "modalidade_cod": "", "intra_saude": "", "asps": "true", "_description": "excecao para 2011 em virtude da ausencia de regulamentacao LC 141/2012" },
+            { "_id": "2011_2", "ano": "<= 2011", "funcao_cod": "10", "uo_cod": "2011, 2121", "fonte_cod": "49", "acao_cod": "", "modalidade_cod": "", "intra_saude": "", "asps": "true", "_description": "excecao para 2011 em virtude da ausencia de regulamentacao LC 141/2012" },
+            { "_id": "2011_3", "ano": "<= 2011", "funcao_cod": "10", "uo_cod": "1251, 2311", "fonte_cod": "60", "acao_cod": "", "modalidade_cod": "", "intra_saude": "", "asps": "true", "_description": "excecao para 2011 em virtude da ausencia de regulamentacao LC 141/2012" },
+            { "_id": "2011_4", "ano": "<= 2011", "funcao_cod": "", "uo_cod": "4461", "fonte_cod": "10, 58", "acao_cod": "7012, 7209, 7225, 7312, 7725, 7959", "modalidade_cod": "", "intra_saude": "", "asps": "true", "_description": "excecao para 2011 em virtude da ausencia de regulamentacao LC 141/2012" },
+  
+            { "_id": "2012_2013", "ano": "2012, 2013", "funcao_cod": "10", "uo_cod": "1321, 1451, 1541, 2261, 2271, 2311, 2321, 4291", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "", "intra_saude": "", "asps": "true" },
+  
+            { "_id": "2014_2015_2016", "ano": "2014, 2015, 2016", "funcao_cod": "10", "uo_cod": "1541, 2261, 2271, 2321, 4291", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "", "intra_saude": "false", "asps": "true" },         
+            { "_id": "2015_2016", "ano": "2015, 2016", "funcao_cod": "10", "uo_cod": "1451, 2141", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "", "intra_saude": "false", "asps": "true" },           
+            { "_id": "2016", "ano": "2016", "funcao_cod": "10", "uo_cod": "2311, 1691, 2301", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "", "intra_saude": "false", "asps": "true" },
+  
+            { "_id": "2017_demais", "ano": "2017", "funcao_cod": "10", "uo_cod": "1301, 1451, 1541, 1691, 2071, 2261, 2271, 2321, 4291", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "!= 95", "intra_saude": "false", "asps": "true" },
+
+            { "_id": "2018_2019_demais", "ano": "2018, 2019", "funcao_cod": "10", "uo_cod": "1301, 1451, 1481, 1541, 1691, 2071, 2261, 2271, 2321, 4291, 1401, 2311", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "!= 45 and != 46 and != 95 and != 96", "intra_saude": "false", "asps": "true" },
+  
+            { "_id": "2020_2021_2022_2023", "ano": "2020, 2021, 2022, 2023", "funcao_cod": "10", "uo_cod": "1301, 1451, 1481, 1541, 2071, 2261, 2271, 2321, 4291", "fonte_cod": "10, 71, 19", "acao_cod": "", "modalidade_cod": "!= 45 and != 46 and != 75 and != 76 and != 95 and != 96", "intra_saude": "false", "asps": "true"},
+            { "_id": "2021_2022_2023_cbmmg", "ano": "2021, 2022, 2023", "funcao_cod": "10", "uo_cod": "1401", "fonte_cod": "10, 71, 19", "acao_cod": "1005, 4483", "modalidade_cod": "!= 45 and != 46 and != 75 and != 76 and != 95 and != 96", "intra_saude": "false", "asps": "true", "_description": "Regra específica CBMMG para 2021 a 2023."},
+
+            { "_id": "2024_em_diante", "ano": ">= 2024", "funcao_cod": "10", "uo_cod": "1451, 1541, 2261, 2271, 2321, 4291, 4631", "fonte_cod": "10, 71, 19", "acao_cod": "", "modalidade_cod": "!= 45 and != 46 and != 75 and != 76 and != 95 and != 96", "intra_saude": "false", "asps": "true" },
+            { "_id": "2024_em_diante_cbmmg", "ano": ">= 2024", "funcao_cod": "10", "uo_cod": "1401", "fonte_cod": "10, 71, 19", "acao_cod": "4094", "modalidade_cod": "!= 45 and != 46 and != 75 and != 76 and != 95 and != 96", "intra_saude": "false", "asps": "true" },
+            { "_id": "2026_unimontes", "ano": ">= 2026", "funcao_cod": "10", "uo_cod": "2311", "fonte_cod": "10, 71, 19", "acao_cod": "4411", "modalidade_cod": "!= 45 and != 46 and != 75 and != 76 and != 95 and != 96", "intra_saude": "false", "asps": "true", "_description": "Regra específica Unimontes - Emenda à Constituição nº 121, de 18/12/2025"},
+  
+            { "_id": "default", "ano": "", "funcao_cod": "", "uo_cod": "", "fonte_cod": "", "acao_cod": "", "modalidade_cod": "", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "", "asps": "false" }
+          ],
+          "passThrough": true,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "decisionTableNode",
+        "id": "asps_desp_ei",
+        "name": "asps_desp_ei",
+        "position": { "x": 280, "y": 100 },
+        "content": {
+          "hitPolicy": "first",
+          "inputs": [
+            { "id": "ano", "name": "ano", "field": "ano" },
+            { "id": "funcao_cod", "name": "funcao_cod", "field": "funcao_cod" },
+            { "id": "uo_cod", "name": "uo_cod", "field": "uo_cod" },
+            { "id": "fonte_cod", "name": "fonte_cod", "field": "fonte_cod" },
+            { "id": "acao_cod", "name": "acao_cod", "field": "acao_cod" },
+            { "id": "modalidade_cod", "name": "modalidade_cod", "field": "modalidade_cod" },
+            { "id": "elemento_item_cod", "name": "elemento_item_cod", "field": "elemento_item_cod" },
+            { "id": "elemento_cod", "name": "elemento_cod", "field": "elemento_cod" },
+            { "id": "intra_saude", "name": "intra_saude", "field": "intra_saude" }
+          ],
+          "outputs": [
+            { "id": "asps", "name": "asps", "field": "asps" }
+          ],
+          "rules": [
+            { "_id": "2011_geral", "ano": "<= 2011", "funcao_cod": "10", "uo_cod": "!= 2011", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "", "asps": "true", "_description": "ASPS Geral - 2011" },
+            { "_id": "2011_1", "ano": "<= 2011", "funcao_cod": "", "uo_cod": "1911", "fonte_cod": "10", "acao_cod": "2733", "modalidade_cod": "", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "", "asps": "true", "_description": "excecao para 2011 em virtude da ausencia de regulamentacao LC 141/2012" },
+            { "_id": "2011_2", "ano": "<= 2011", "funcao_cod": "10", "uo_cod": "2011, 2121", "fonte_cod": "49", "acao_cod": "", "modalidade_cod": "", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "", "asps": "true", "_description": "excecao para 2011 em virtude da ausencia de regulamentacao LC 141/2012" },
+            { "_id": "2011_3", "ano": "<= 2011", "funcao_cod": "10", "uo_cod": "1251, 2311", "fonte_cod": "60", "acao_cod": "", "modalidade_cod": "", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "", "asps": "true", "_description": "excecao para 2011 em virtude da ausencia de regulamentacao LC 141/2012" },
+            { "_id": "2011_4", "ano": "<= 2011", "funcao_cod": "", "uo_cod": "4461", "fonte_cod": "10, 58", "acao_cod": "7012, 7209, 7225, 7312, 7725, 7959", "modalidade_cod": "", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "", "asps": "true", "_description": "excecao para 2011 em virtude da ausencia de regulamentacao LC 141/2012" },
+  
+            { "_id": "2012_2013", "ano": "2012, 2013", "funcao_cod": "10", "uo_cod": "1321, 1451, 1541, 2261, 2271, 2311, 2321, 4291", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "", "asps": "true" },
+  
+            { "_id": "2014_2015_2016", "ano": "2014, 2015, 2016", "funcao_cod": "10", "uo_cod": "1541, 2261, 2271, 2321, 4291", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "false", "asps": "true" },
+            
+            { "_id": "2015_2016", "ano": "2015, 2016", "funcao_cod": "10", "uo_cod": "1451, 2141", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "false", "asps": "true" },
+            
+            { "_id": "2016", "ano": "2016", "funcao_cod": "10", "uo_cod": "2311", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "false", "asps": "true" },
+  
+            { "_id": "2017_hemominas", "ano": "2017", "funcao_cod": "10", "uo_cod": "2321", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "!= 95", "elemento_item_cod": "!= 3925 and != 3930 and != 5905", "elemento_cod": "", "intra_saude": "false", "asps": "true" },
+            { "_id": "2017_demais", "ano": "2017", "funcao_cod": "10", "uo_cod": "1301, 1451, 1541, 1691, 2071, 2261, 2271, 4291", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "!= 95", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "false", "asps": "true" },
+  
+            { "_id": "2018_2019_hemominas", "ano": "2018, 2019", "funcao_cod": "10", "uo_cod": "2321", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "!= 45 and != 46 and != 95 and != 96", "elemento_item_cod": "!= 3925 and != 3930 and != 5905", "elemento_cod": "", "intra_saude": "false", "asps": "true" },
+            { "_id": "2018_2019_demais", "ano": "2018, 2019", "funcao_cod": "10", "uo_cod": "1301, 1451, 1481, 1541, 1691, 2071, 2261, 2271, 4291, 1401, 2311", "fonte_cod": "10", "acao_cod": "", "modalidade_cod": "!= 45 and != 46 and != 95 and != 96", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "false", "asps": "true" },
+  
+            { "_id": "2020_2021_2022", "ano": "2020, 2021, 2022", "funcao_cod": "10", "uo_cod": "1301, 1451, 1481, 1541, 2071, 2261, 2271, 2321, 4291", "fonte_cod": "10, 71, 19", "acao_cod": "", "modalidade_cod": "!= 45 and != 46 and != 75 and != 76 and != 95 and != 96", "elemento_item_cod": "!= 3925 and != 3930", "elemento_cod": "!= 59", "intra_saude": "false", "asps": "true",  "_description": "Foi incluida a fonte 19 (execucao apenas a partir de 2023). Foi retirado o filtro da UO 2321 (Hemominas), uma vez que esses elementos-item em todas as UOs do setor saúde devem ser deduzidos. Elemento 59 deduzido conforme art. 4°, I, da LC 141/2012."},
+            { "_id": "2021_2022_cbmmg", "ano": "2021, 2022", "funcao_cod": "10", "uo_cod": "1401", "fonte_cod": "10, 71, 19", "acao_cod": "1005, 4483", "modalidade_cod": "!= 45 and != 46 and != 75 and != 76 and != 95 and != 96", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "false", "asps": "true", "_description": "Regra específica CBMMG para 2021 e 2022."},
+  
+            { "_id": "2023", "ano": "2023", "funcao_cod": "10", "uo_cod": "1451, 1481, 1541, 2071, 2261, 2271, 2321, 4291", "fonte_cod": "10, 71, 19", "acao_cod": "", "modalidade_cod": "!= 45 and != 46 and != 75 and != 76 and != 95 and != 96", "elemento_item_cod": "!= 3925 and != 3928 and != 3930", "elemento_cod": "!= 59 and != 94", "intra_saude": "false", "asps": "true", "_description": "Foi decotado o EI 3928 conforme deliberação do GT das fontes STN/COs realizada em 19/10/2023. Exclusão do elemento 94 (indenizações e restituições trabalhistas), conforme orientação do MDF 13 edicao (página 310) e entendimento do TCE." },
+            { "_id": "2023_cbmmg", "ano": "2023", "funcao_cod": "10", "uo_cod": "1401", "fonte_cod": "10, 71, 19", "acao_cod": "1005, 4483", "modalidade_cod": "!= 45 and != 46 and != 75 and != 76 and != 95 and != 96", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "false", "asps": "true" },
+  
+            { "_id": "2024_em_diante", "ano": ">= 2024", "funcao_cod": "10", "uo_cod": "1451, 1541, 2261, 2271, 2321, 4291, 4631", "fonte_cod": "10, 71, 19", "acao_cod": "", "modalidade_cod": "!= 45 and != 46 and != 75 and != 76 and != 95 and != 96", "elemento_item_cod": "!= 3925 and != 3928 and != 3930", "elemento_cod": "!= 59 and != 94", "intra_saude": "false", "asps": "true" },
+            { "_id": "2024_em_diante_cbmmg", "ano": ">= 2024", "funcao_cod": "10", "uo_cod": "1401", "fonte_cod": "10, 71, 19", "acao_cod": "4094", "modalidade_cod": "!= 45 and != 46 and != 75 and != 76 and != 95 and != 96", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "false", "asps": "true" },
+            { "_id": "2026_unimontes", "ano": ">= 2026", "funcao_cod": "10", "uo_cod": "2311", "fonte_cod": "10, 71, 19", "acao_cod": "4411", "modalidade_cod": "!= 45 and != 46 and != 75 and != 76 and != 95 and != 96", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "false", "asps": "true", "_description": "Regra específica Unimontes - Emenda à Constituição nº 121, de 18/12/2025"},
+  
+            { "_id": "default", "ano": "", "funcao_cod": "", "uo_cod": "", "fonte_cod": "", "acao_cod": "", "modalidade_cod": "", "elemento_item_cod": "", "elemento_cod": "", "intra_saude": "", "asps": "false" }
+          ],
+          "passThrough": false,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "outputNode",
+        "id": "asps_desp_output",
+        "name": "asps",
+        "position": { "x": 600, "y": 100 },
+        "content": { "schema": "" }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "type": "edge",
+        "sourceId": "asps_desp_input",
+        "targetId": "is_intra_saude_desp",
+        "sourceHandle": null
+      },
+      {
+        "id": "e2",
+        "type": "edge",
+        "sourceId": "is_intra_saude_desp",
+        "targetId": "asps_desp_switch",
+        "sourceHandle": null
+      },
+      {
+        "id": "e3",
+        "type": "edge",
+        "sourceId": "asps_desp_switch",
+        "targetId": "asps_desp_ei",
+        "sourceHandle": "EI"
+      },
+      {
+        "id": "e4",
+        "type": "edge",
+        "sourceId": "asps_desp_switch",
+        "targetId": "asps_desp_acao",
+        "sourceHandle": "acao"
+      },
+      {
+        "id": "e5",
+        "type": "edge",
+        "sourceId": "asps_desp_ei",
+        "targetId": "asps_desp_output",
+        "sourceHandle": null
+      },
+      {
+        "id": "e6",
+        "type": "edge",
+        "sourceId": "asps_desp_acao",
+        "targetId": "asps_desp_output",
+        "sourceHandle": null
+      }
+    ]
+  }
+  

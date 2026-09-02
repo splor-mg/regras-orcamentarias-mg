@@ -1,0 +1,205 @@
+{
+  "contentType": "application/vnd.gorules.decision",
+  "nodes": [
+    {
+      "type": "inputNode",
+      "id": "input",
+      "name": "request",
+      "position": { "x": 0, "y": 100 },
+      "content": { "schema": "" }
+    },
+    {
+      "type": "expressionNode",
+      "id": "normaliza_receita_cod",
+      "name": "normaliza_receita_cod",
+      "position": { "x": 180, "y": 100 },
+      "content": {
+        "expressions": [
+          {
+            "id": "expr1",
+            "key": "receita_cod",
+            "value": "string(receita_cod)"
+          }
+        ],
+        "passThrough": true
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "transf_const_mun_rec",
+      "name": "transf_const_mun_rec",
+      "position": { "x": 400, "y": 100 },
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          { "id": "ano", "name": "ano", "field": "ano" },
+          { "id": "receita_cod", "name": "receita_cod", "field": "receita_cod" }
+        ],
+        "outputs": [
+          { "id": "transf_mun", "name": "transf_mun", "field": "transf_mun" }
+        ],
+        "rules": [
+          {
+            "_id": "icms_ate_2017",
+            "ano": "<=2017",
+            "receita_cod": "startsWith($, \"1931150300\") or startsWith($, \"1931050300\") or startsWith($, \"1113020300\") or startsWith($, \"1911010300\") or startsWith($, \"1911420300\") or startsWith($, \"1932010300\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte do ICMS"
+          },
+          {
+            "_id": "icms_2018_2022",
+            "ano": ">=2018 and <=2022",
+            "receita_cod": "startsWith($, \"1118021102\") or startsWith($, \"1118021202\") or startsWith($, \"1118021302\") or startsWith($, \"1118021402\") or startsWith($, \"1718991131002\") or startsWith($, \"9118021102\") or startsWith($, \"9118021202\") or startsWith($, \"9118021302\") or startsWith($, \"9118021402\") or startsWith($, \"9718991131002\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte do ICMS. Dedutoras a partir de 2022; inclui compensação tributária do etanol"
+          },
+          {
+            "_id": "icms_desde_2023",
+            "ano": ">=2023",
+            "receita_cod": "startsWith($, \"1114501102\") or startsWith($, \"1114501202\") or startsWith($, \"1114501302\") or startsWith($, \"1114501402\") or startsWith($, \"9114501102\") or startsWith($, \"9114501202\") or startsWith($, \"9114501302\") or startsWith($, \"9114501402\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte do ICMS"
+          },
+          {
+            "_id": "ipva_ate_2017",
+            "ano": "<=2017",
+            "receita_cod": "startsWith($, \"1931140200\") or startsWith($, \"1911040200\") or startsWith($, \"1911410200\") or startsWith($, \"1112050200\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte do IPVA"
+          },
+          {
+            "_id": "ipva_2018_2022",
+            "ano": ">=2018 and <=2022",
+            "receita_cod": "startsWith($, \"1118012102\") or startsWith($, \"1118012202\") or startsWith($, \"1118012302\") or startsWith($, \"1118012402\") or startsWith($, \"9118012102\") or startsWith($, \"9118012202\") or startsWith($, \"9118012302\") or startsWith($, \"9118012402\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte do IPVA. Dedutoras a partir de 2022"
+          },
+          {
+            "_id": "ipva_desde_2023",
+            "ano": ">=2023",
+            "receita_cod": "startsWith($, \"1112510102\") or startsWith($, \"1112510202\") or startsWith($, \"1112510302\") or startsWith($, \"1112510402\") or startsWith($, \"9112510102\") or startsWith($, \"9112510202\") or startsWith($, \"9112510302\") or startsWith($, \"9112510402\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte do IPVA"
+          },
+          {
+            "_id": "ipi_ate_2017",
+            "ano": "<=2017",
+            "receita_cod": "startsWith($, \"1721011203\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte do IPI"
+          },
+          {
+            "_id": "ipi_2018_2022",
+            "ano": ">=2018 and <=2022",
+            "receita_cod": "startsWith($, \"1718016101002\") or startsWith($, \"9718016101002\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte do IPI. Dedutoras a partir de 2022"
+          },
+          {
+            "_id": "ipi_desde_2023",
+            "ano": ">=2023",
+            "receita_cod": "startsWith($, \"1711530102\") or startsWith($, \"9711530102\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte do IPI"
+          },
+          {
+            "_id": "cide_ate_2017",
+            "ano": "<=2017",
+            "receita_cod": "startsWith($, \"1721011302\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte da CIDE"
+          },
+          {
+            "_id": "cide_2018_2022",
+            "ano": ">=2018 and <=2022",
+            "receita_cod": "startsWith($, \"1718017101002\") or startsWith($, \"9718017101002\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte da CIDE. Dedutoras a partir de 2022"
+          },
+          {
+            "_id": "cide_desde_2023",
+            "ano": ">=2023",
+            "receita_cod": "startsWith($, \"1711540102\") or startsWith($, \"9711540102\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte da CIDE"
+          },
+          {
+            "_id": "etanol_2022",
+            "ano": "2022",
+            "receita_cod": "startsWith($, \"1718991131002\") or startsWith($, \"9718991131002\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte do auxílio financeiro ICMS etanol"
+          },
+          {
+            "_id": "etanol_desde_2023",
+            "ano": ">=2023",
+            "receita_cod": "startsWith($, \"1719610101002\") or startsWith($, \"9719610101002\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte do auxílio financeiro ICMS etanol"
+          },
+          {
+            "_id": "compensacao_icms_2022",
+            "ano": "2022",
+            "receita_cod": "startsWith($, \"1718991132002\") or startsWith($, \"9718991132002\")",
+            "transf_mun": "true",
+            "_description": "Compensação financeira perda tributária ICMS - LC federal"
+          },
+          {
+            "_id": "compensacao_icms_desde_2023",
+            "ano": ">=2023",
+            "receita_cod": "startsWith($, \"1719620102000\") or startsWith($, \"9719620102000\")",
+            "transf_mun": "true",
+            "_description": "Compensação financeira perda tributária ICMS - LC federal"
+          },
+          {
+            "_id": "ibs_desde_2027",
+            "ano": ">=2027",
+            "receita_cod": "startsWith($, \"1116500102000\") or startsWith($, \"9116500102000\")",
+            "transf_mun": "true",
+            "_description": "Cota-parte do IBS"
+          },
+          {
+            "_id": "default",
+            "ano": "",
+            "receita_cod": "",
+            "transf_mun": "false"
+          }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "outputNode",
+      "id": "transf_const_mun_rec_output",
+      "name": "transf_mun",
+      "position": { "x": 700, "y": 100 },
+      "content": { "schema": "" }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "type": "edge",
+      "sourceId": "input",
+      "targetId": "normaliza_receita_cod",
+      "sourceHandle": null
+    },
+    {
+      "id": "e2",
+      "type": "edge",
+      "sourceId": "normaliza_receita_cod",
+      "targetId": "transf_const_mun_rec",
+      "sourceHandle": null
+    },
+    {
+      "id": "e3",
+      "type": "edge",
+      "sourceId": "transf_const_mun_rec",
+      "targetId": "transf_const_mun_rec_output",
+      "sourceHandle": null
+    }
+  ]
+}

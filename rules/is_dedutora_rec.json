@@ -1,0 +1,82 @@
+{
+    "contentType": "application/vnd.gorules.decision",
+    "nodes": [
+      {
+        "type": "inputNode",
+        "id": "input",
+        "name": "request",
+        "position": { "x": 0, "y": 100 },
+        "content": { "schema": "" }
+      },
+      {
+        "type": "expressionNode",
+        "id": "normaliza_receita_cod",
+        "name": "normaliza_receita_cod",
+        "position": { "x": 140, "y": 100 },
+        "content": {
+          "expressions": [
+            {
+              "id": "expr1",
+              "key": "receita_cod",
+              "value": "string(receita_cod)"
+            }
+          ],
+          "passThrough": true
+        }
+      },
+      {
+        "type": "decisionTableNode",
+        "id": "dedutora_rec",
+        "name": "dedutora_rec",
+        "position": { "x": 280, "y": 100 },
+        "content": {
+          "hitPolicy": "first",
+          "inputs": [
+            { "id": "receita_cod", "name": "receita_cod", "field": "receita_cod" }
+          ],
+          "outputs": [
+            { "id": "dedutora", "name": "dedutora", "field": "dedutora" }
+          ],
+          "rules": [
+            { "_id": "ate_2017", "receita_cod": "startsWith($, \"9\")", "dedutora": "true" },
+            { "_id": "default", "receita_cod": "", "dedutora": "false" }
+          ],
+          "passThrough": true,
+          "inputField": null,
+          "outputPath": null,
+          "executionMode": "single"
+        }
+      },
+      {
+        "type": "outputNode",
+        "id": "dedutora_rec_output",
+        "name": "dedutora",
+        "position": { "x": 840, "y": 100 },
+        "content": { "schema": "" }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "type": "edge",
+        "sourceId": "input",
+        "targetId": "normaliza_receita_cod",
+        "sourceHandle": null
+      },
+      {
+        "id": "e2",
+        "type": "edge",
+        "sourceId": "normaliza_receita_cod",
+        "targetId": "dedutora_rec",
+        "sourceHandle": null
+      },
+      {
+        "id": "e3",
+        "type": "edge",
+        "sourceId": "dedutora_rec",
+        "targetId": "dedutora_rec_output",
+        "sourceHandle": null
+      }
+    ]
+  }
+  

@@ -1,0 +1,204 @@
+{
+  "contentType": "application/vnd.gorules.decision",
+  "nodes": [
+    {
+      "type": "inputNode",
+      "id": "input",
+      "name": "request",
+      "position": {"x": 0, "y": 100},
+      "content": {"schema": ""}
+    },
+    {
+      "type": "expressionNode",
+      "id": "normaliza_receita_cod",
+      "name": "normaliza_receita_cod",
+      "position": {"x": 180, "y": 100},
+      "content": {
+        "expressions": [
+          {"id": "expr1", "key": "receita_cod", "value": "string(receita_cod)"}
+        ],
+        "passThrough": true
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_itcd_principal",
+      "name": "is_itcd_principal",
+      "position": {"x": 360, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "itcd_principal","name": "itcd_principal", "field": "itcd_principal"}
+        ],
+        "rules": [
+          { "_id": "ate_2017", "ano": "<=2017", "receita_cod": "startsWith($, \"111207\") or startsWith($, \"911207\")", "itcd_principal": "true" },
+          { "_id": "2007_fundeb", "ano": "2007", "receita_cod": "startsWith($, \"111209\") or startsWith($, \"911209\")", "itcd_principal": "true", "_description": "Em 2007 o FUNDEF foi substituido pelo FUNDEB que passou a incluir o ITCD na base de cálculo. Somente nesse ano as naturezas 111209, 191121 e 193122 foram usadas para registrar a cota-parte do FUNDEB. " },
+          { "_id": "2018_2022", "ano": "2018, 2019, 2020, 2021, 2022", "receita_cod": "startsWith($, \"11180131\") or startsWith($, \"91180131\")", "itcd_principal": "true" },
+          { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"11125201\") or startsWith($, \"91125201\")", "itcd_principal": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "itcd_principal": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_itcd_mjm",
+      "name": "is_itcd_mjm",
+      "position": {"x": 540, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "itcd_mjm","name": "itcd_mjm", "field": "itcd_mjm"}
+        ],
+        "rules": [
+          { "_id": "2002", "ano": "2002", "receita_cod": "startsWith($, \"191103\") or startsWith($, \"991103\")", "itcd_mjm": "true" },
+          { "_id": "2003", "ano": "2003", "receita_cod": "startsWith($, \"191109\") or startsWith($, \"991109\")", "itcd_mjm": "true" },
+          { "_id": "2007_fundeb", "ano": "2007", "receita_cod": "startsWith($, \"191121\") or startsWith($, \"991121\")", "itcd_mjm": "true" },
+          { "_id": "2004_2017", "ano": ">=2004 and <=2017", "receita_cod": "startsWith($, \"191120\") or startsWith($, \"991120\")", "itcd_mjm": "true" },
+          { "_id": "2018_2022", "ano": ">=2018 and <=2022", "receita_cod": "startsWith($, \"11180132\") or startsWith($, \"91180132\")", "itcd_mjm": "true" },
+          { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"11125202\") or startsWith($, \"91125202\")", "itcd_mjm": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "itcd_mjm": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_itcd_da",
+      "name": "is_itcd_da",
+      "position": {"x": 720, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "itcd_da","name": "itcd_da", "field": "itcd_da"}
+        ],
+        "rules": [
+          { "_id": "2002_2004", "ano": "2002, 2003, 2004", "receita_cod": "startsWith($, \"193202\") or startsWith($, \"993202\")", "itcd_da": "true" },
+          { "_id": "2002", "ano": "2002", "receita_cod": "startsWith($, \"193102\") or startsWith($, \"993102\")", "itcd_da": "true" },
+          { "_id": "2003", "ano": "2003", "receita_cod": "startsWith($, \"193117\") or startsWith($, \"993117\")", "itcd_da": "true" },
+          { "_id": "2007_fundeb", "ano": "2007", "receita_cod": "startsWith($, \"193122\") or startsWith($, \"993122\")", "itcd_da": "true" },
+          { "_id": "2004_2017", "ano": ">=2004 and <=2017", "receita_cod": "startsWith($, \"193120\") or startsWith($, \"993120\")", "itcd_da": "true" },
+          { "_id": "2018_2022", "ano": ">=2018 and <=2022", "receita_cod": "startsWith($, \"11180133\") or startsWith($, \"91180133\")", "itcd_da": "true" },
+          { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"11125203\") or startsWith($, \"91125203\")", "itcd_da": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "itcd_da": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "id": "is_itcd_mjm_da",
+      "name": "is_itcd_mjm_da",
+      "position": {"x": 900, "y": 100},
+      "content": {
+        "hitPolicy": "first",
+        "inputs": [
+          {"id": "ano","name": "ano", "field": "ano"},
+          {"id": "receita_cod","name": "receita_cod", "field": "receita_cod"}
+        ],
+        "outputs": [
+          {"id": "itcd_mjm_da","name": "itcd_mjm_da", "field": "itcd_mjm_da"}
+        ],
+        "rules": [
+          { "_id": "desde_2023", "ano": ">=2023", "receita_cod": "startsWith($, \"11125204\") or startsWith($, \"91125204\")", "itcd_mjm_da": "true" },
+          { "_id": "default", "ano": "", "receita_cod": "", "itcd_mjm_da": "false" }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      }
+    },
+    {
+      "type": "expressionNode",
+      "id": "is_itcd",
+      "name": "is_itcd",
+      "position": {"x": 1080, "y": 100},
+      "content": {
+        "expressions": [
+          {"id": "itcd", "key": "itcd", "value": "itcd_principal or itcd_mjm or itcd_da or itcd_mjm_da"}
+        ],
+        "passThrough": true
+      }
+    },
+    {
+      "type": "outputNode",
+      "id": "itcd_output",
+      "name": "itcd",
+      "position": {"x": 1260, "y": 100},
+      "content": {"schema": ""}
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "type": "edge",
+      "sourceId": "input",
+      "targetId": "normaliza_receita_cod",
+      "sourceHandle": null
+    },
+    {
+      "id": "e2",
+      "type": "edge",
+      "sourceId": "normaliza_receita_cod",
+      "targetId": "is_itcd_principal",
+      "sourceHandle": null
+    },
+    {
+      "id": "e3",
+      "type": "edge",
+      "sourceId": "is_itcd_principal",
+      "targetId": "is_itcd_mjm",
+      "sourceHandle": null
+    },
+    {
+      "id": "e4",
+      "type": "edge",
+      "sourceId": "is_itcd_mjm",
+      "targetId": "is_itcd_da",
+      "sourceHandle": null
+    },
+    {
+      "id": "e5",
+      "type": "edge",
+      "sourceId": "is_itcd_da",
+      "targetId": "is_itcd_mjm_da",
+      "sourceHandle": null
+    },
+    {
+      "id": "e6",
+      "type": "edge",
+      "sourceId": "is_itcd_mjm_da",
+      "targetId": "is_itcd",
+      "sourceHandle": null
+    },
+    {
+      "id": "e7",
+      "type": "edge",
+      "sourceId": "is_itcd",
+      "targetId": "itcd_output",
+      "sourceHandle": null
+    }
+  ]
+}
